@@ -1,0 +1,19 @@
+{
+  "name": "upstox_ohlc",
+  "version": "1.0.0",
+  "description": "assignment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coderbirju/Upstox_OHLC.git"
+  },
+  "author": "Arjun raja Y",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coderbirju/Upstox_OHLC/issues"
+  },
+  "homepage": "https://github.com/coderbirju/Upstox_OHLC#readme"
+}
