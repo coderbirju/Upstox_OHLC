@@ -1,5 +1,7 @@
 const readline = require('readline');
 const fs = require('fs');
+const moment = require('moment');
+const { Worker, parentPort } = require('worker_threads');
 
 const readInterface = readline.createInterface({
     input: fs.createReadStream('./dataset/test.json'),
@@ -7,17 +9,17 @@ const readInterface = readline.createInterface({
     console: false
 });
 
+// worker 2
+const convertToSeconds = (num) => {
+    return (num / 1000000).toFixed(6) * 1;
+}
+
 readInterface.on('line', (line)=> {
-    console.log(line);
+    const parsedData = JSON.parse(line);
+    const tsSeconds = convertToSeconds(parsedData.TS2);
+    parsedData.TS2 = tsSeconds;  
+    parentPort.postMessage(parsedData);
 });
 
-// const readableStream = fs.createReadStream('./dataset/test.json');
-// let data = '';
 
-// readableStream.on('data', function(chunk) {
-//     data+=chunk;
-// });
 
-// readableStream.on('end', function() {
-//     console.log(data);
-// });
