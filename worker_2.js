@@ -6,25 +6,29 @@ const fs = require('fs');
 
 
 const convertToSeconds = (num) => {
-    return (num / 1000000).toFixed(6) * 1;
+    return _.multiply(_.divide(num,1000000).toFixed(6), 1);
 }
 
 if (!isMainThread) {
     let ohlcData = {};
     parentPort.on('message', (message) => {
-    const checkBarNum = (seconds) => {
-        const startTime = moment(convertToSeconds(message.startTime));
-        const currentTime = moment(convertToSeconds(seconds));
-        const difference = currentTime.diff(startTime, 'seconds');
-        if(difference === 0) {
-            return 1;
+    if(typeof message === "object") {
+        const checkBarNum = (seconds) => {
+            const startTime = moment(convertToSeconds(message.startTime));
+            const currentTime = moment(convertToSeconds(seconds));
+            const difference = currentTime.diff(startTime, 'seconds');
+            if(difference === 0) {
+                return 1;
+            }
+            return _.ceil(_.divide(difference,15));
         }
-        return _.ceil(_.divide(difference,15));
+        let currentBar = checkBarNum(message.TS2);
+        setOhlcData(message,currentBar,ohlcData);
+        fs.writeFileSync('./outputs/output.json', JSON.stringify(ohlcData, null,'\t'));
+    } else {
+        fs.writeFileSync('./outputs/subscribed.json', JSON.stringify(ohlcData[message], null,'\t'));
+        parentPort.postMessage(JSON.stringify(ohlcData[message]));
     }
-    let currentBar = checkBarNum(message.TS2);
-    setOhlcData(message,currentBar,ohlcData);
-    fs.writeFileSync('./output.json', JSON.stringify(ohlcData));
-    console.log("outputFile streamed");
     });
 }
 
