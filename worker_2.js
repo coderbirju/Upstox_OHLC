@@ -1,6 +1,7 @@
 const { isMainThread, parentPort } = require('worker_threads');
 const moment = require('moment');
 const _ = require('lodash');
+const fs = require('fs');
 
 
 
@@ -22,9 +23,9 @@ if (!isMainThread) {
     }
     let currentBar = checkBarNum(message.TS2);
     setOhlcData(message,currentBar,ohlcData);
-    console.log('ohlcData: ', ohlcData);
+    fs.writeFileSync('./output.json', JSON.stringify(ohlcData));
+    console.log("outputFile streamed");
     });
-
 }
 
 const setOhlcData = (message, bar_num, consolidatedData) => {
