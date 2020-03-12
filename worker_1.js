@@ -4,7 +4,7 @@ const moment = require('moment');
 const { Worker, parentPort } = require('worker_threads');
 
 const readInterface = readline.createInterface({
-    input: fs.createReadStream('./dataset/test.json'),
+    input: fs.createReadStream('./dataset/trades.json'),
     output: false,
     console: false
 });
